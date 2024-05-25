@@ -2,6 +2,11 @@
 
 Este es el backend para la aplicación de gestión de tareas. Está construido con Node.js, Express y MongoDB.
 
+## Requisitos Previos
+
+- [Node.js](https://nodejs.org/)
+- [MongoDB](https://www.mongodb.com/try/download/community) (Instalado y corriendo)
+
 ## Instalación
 
 1. Clona el repositorio:
