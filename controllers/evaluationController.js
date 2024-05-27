@@ -1,10 +1,10 @@
 const Evaluation = require('../models/evaluationModel');
 
 exports.createEvaluation = async (req, res) => {
-    const { evaluator, taskEvaluated, evaluationDate, rating, comments, recommendations, evaluationStatus, attachments } = req.body;
+    const { taskEvaluated, evaluationDate, rating, comments, recommendations, evaluationStatus, attachments } = req.body;
     try {
         const evaluation = new Evaluation({
-            evaluator,
+            evaluator: req.user.userId,
             taskEvaluated,
             evaluationDate,
             rating,
@@ -22,8 +22,21 @@ exports.createEvaluation = async (req, res) => {
 
 exports.getEvaluations = async (req, res) => {
     try {
-        const evaluations = await Evaluation.find();
+        const evaluations = await Evaluation.find().populate('taskEvaluated evaluator');
         res.status(200).json(evaluations);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
+exports.getEvaluationById = async (req, res) => {
+    const { evaluationId } = req.params;
+    try {
+        const evaluation = await Evaluation.findById(evaluationId).populate('taskEvaluated evaluator');
+        if (!evaluation) {
+            return res.status(404).json({ message: 'Evaluation not found' });
+        }
+        res.status(200).json(evaluation);
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
@@ -31,9 +44,9 @@ exports.getEvaluations = async (req, res) => {
 
 exports.updateEvaluation = async (req, res) => {
     const { evaluationId } = req.params;
-    const { evaluator, taskEvaluated, evaluationDate, rating, comments, recommendations, evaluationStatus, attachments } = req.body;
+    const { taskEvaluated, evaluationDate, rating, comments, recommendations, evaluationStatus, attachments } = req.body;
     try {
-        const evaluation = await Evaluation.findByIdAndUpdate(evaluationId, { evaluator, taskEvaluated, evaluationDate, rating, comments, recommendations, evaluationStatus, attachments }, { new: true });
+        const evaluation = await Evaluation.findByIdAndUpdate(evaluationId, { taskEvaluated, evaluationDate, rating, comments, recommendations, evaluationStatus, attachments }, { new: true });
         res.status(200).json(evaluation);
     } catch (error) {
         res.status(400).json({ error: error.message });

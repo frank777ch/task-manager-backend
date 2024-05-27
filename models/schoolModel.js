@@ -32,9 +32,11 @@ const schoolSchema = new mongoose.Schema({
     website: {
         type: String,
         required: true,
-    }
-}, {
-    timestamps: true,
+    },
+    principal: {
+        type: String,
+        required: true,
+    },
 });
 
 const School = mongoose.model('School', schoolSchema);

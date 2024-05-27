@@ -1,9 +1,9 @@
 const School = require('../models/schoolModel');
 
 exports.createSchool = async (req, res) => {
-    const { name, address, city, state, zipCode, phone, email, website } = req.body;
+    const { name, address, city, state, zipCode, phone, email, website, principal } = req.body;
     try {
-        const school = new School({ name, address, city, state, zipCode, phone, email, website });
+        const school = new School({ name, address, city, state, zipCode, phone, email, website, principal });
         await school.save();
         res.status(201).json(school);
     } catch (error) {
@@ -20,11 +20,24 @@ exports.getSchools = async (req, res) => {
     }
 };
 
+exports.getSchoolById = async (req, res) => {
+    const { schoolId } = req.params;
+    try {
+        const school = await School.findById(schoolId);
+        if (!school) {
+            return res.status(404).json({ message: 'School not found' });
+        }
+        res.status(200).json(school);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
 exports.updateSchool = async (req, res) => {
     const { schoolId } = req.params;
-    const { name, address, city, state, zipCode, phone, email, website } = req.body;
+    const { name, address, city, state, zipCode, phone, email, website, principal } = req.body;
     try {
-        const school = await School.findByIdAndUpdate(schoolId, { name, address, city, state, zipCode, phone, email, website }, { new: true });
+        const school = await School.findByIdAndUpdate(schoolId, { name, address, city, state, zipCode, phone, email, website, principal }, { new: true });
         res.status(200).json(school);
     } catch (error) {
         res.status(400).json({ error: error.message });

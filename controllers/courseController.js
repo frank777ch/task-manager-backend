@@ -20,6 +20,19 @@ exports.getCourses = async (req, res) => {
     }
 };
 
+exports.getCourseById = async (req, res) => {
+    const { courseId } = req.params;
+    try {
+        const course = await Course.findById(courseId);
+        if (!course) {
+            return res.status(404).json({ message: 'Course not found' });
+        }
+        res.status(200).json(course);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
 exports.updateCourse = async (req, res) => {
     const { courseId } = req.params;
     const { name, description, startDate, endDate, instructor, credits, schedule, location } = req.body;

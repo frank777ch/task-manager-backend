@@ -32,6 +32,19 @@ exports.getTasks = async (req, res) => {
     }
 };
 
+exports.getTaskById = async (req, res) => {
+    const { taskId } = req.params;
+    try {
+        const task = await Task.findById(taskId).populate('course');
+        if (!task) {
+            return res.status(404).json({ message: 'Task not found' });
+        }
+        res.status(200).json(task);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
 exports.updateTask = async (req, res) => {
     const { taskId } = req.params;
     const { title, description, status, startDate, endDate, priority, category, tags, assignedTo, course } = req.body;

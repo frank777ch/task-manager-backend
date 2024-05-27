@@ -4,40 +4,37 @@ const evaluationSchema = new mongoose.Schema({
     evaluator: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        required: true,
+        required: true
     },
     taskEvaluated: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Task',
-        required: true,
+        required: true
     },
     evaluationDate: {
         type: Date,
-        required: true,
+        required: true
     },
     rating: {
         type: Number,
-        min: 1,
-        max: 5,
-        required: true,
+        required: true
     },
     comments: {
         type: String,
-        required: true,
     },
     recommendations: {
         type: String,
     },
     evaluationStatus: {
         type: String,
-        enum: ['Pending', 'Complete'],
-        default: 'Pending',
+        enum: ['Pending', 'Completed'],
+        default: 'Pending'
     },
-    attachments: [{
-        type: String,
-    }],
+    attachments: {
+        type: [String], // URLs or paths to attachment files
+    }
 }, {
-    timestamps: true,
+    timestamps: true
 });
 
 const Evaluation = mongoose.model('Evaluation', evaluationSchema);
