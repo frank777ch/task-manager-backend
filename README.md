@@ -40,7 +40,7 @@ This is the backend of the Task Manager application, built with Node.js, Express
 
 3. Create a `.env` file in the root of the project with the following content:
     ```env
-    MONGODB_URI=your-mongodb-uri
+    MONGO_URI=your-mongodb-uri
     JWT_SECRET=your-jwt-secret
     PORT=5000
     ```
