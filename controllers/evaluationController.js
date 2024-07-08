@@ -22,12 +22,17 @@ exports.createEvaluation = async (req, res) => {
 
 exports.getEvaluations = async (req, res) => {
     try {
-        const evaluations = await Evaluation.find().populate('taskEvaluated evaluator');
-        res.status(200).json(evaluations);
+      const evaluations = await Evaluation.find().populate('taskEvaluated evaluator');
+      const sanitizedEvaluations = evaluations.map(evaluation => ({
+        ...evaluation._doc,
+        taskEvaluated: evaluation.taskEvaluated || { title: 'No Title' },
+        evaluator: evaluation.evaluator || { firstName: 'Unknown', lastName: 'Evaluator' }
+      }));
+      res.status(200).json(sanitizedEvaluations);
     } catch (error) {
-        res.status(400).json({ error: error.message });
+      res.status(400).json({ error: error.message });
     }
-};
+  };
 
 exports.getEvaluationById = async (req, res) => {
     const { evaluationId } = req.params;
