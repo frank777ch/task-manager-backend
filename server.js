@@ -17,8 +17,7 @@ app.disable('x-powered-by');
 app.use(helmet());
 
 const trustedOrigins = [
-  'http://localhost:3000', 
-  'http://192.168.1.15:3000',
+  'http://localhost:3000'
 ];
 
 const corsOptions = {
